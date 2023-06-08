@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Sam">
+  <meta name="keyword" content="IPC">
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="expires" CONTENT="0">
+  <title>CViTek IP Camera</title>
+  <!-- Favicons -->
+  <link href="src/img/favicon.ico" rel="icon">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!--external css-->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/bootstrap-slider.min.css" rel="stylesheet">
+  <!-- scripts -->
+  <script src="js/third_party/jquery.min.js"></script>
+  <script src="js/third_party/bootstrap-slider.min.js"></script>
+</head>
+
+<body>
+  <section id="container">
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><img src="src/img/logo.png" width="100%" height="100%"></a>
+      <!--logo end-->
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <!-- <li><a class="logout" href="">Logout</a></li> -->
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+
+
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+          <li class="mt">
+            <a href="index.html">
+              <i class="fa fa-dashboard"></i>
+              <span>预览</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a class="active" href="javascript:;">
+              <i class="fa fa-desktop"></i>
+              <span>图像设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="h265_player.html">H265播放器</a></li>
+              <li><a href="setting_image.html">图像</a></li>
+              <li><a href="setting_osd.html">OSD</a></li>
+              <li><a href="setting_video.html">视频</a></li>
+              <li><a href="setting_audio.html">音频</a></li>
+              <li class="active"><a href="setting_smart.html">智能</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-cogs"></i>
+              <span>网络设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="setting_net_basic.html">基本设置</a></li>
+              <li><a href="setting_net_stream.html">流设置</a></li>
+              <li><a href="setting_net_cloud.html">云端设置</a></li>
+              <li><a href="setting_net_check.html">网络检测</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-comments-o"></i>
+              <span>系统信息</span>
+            </a>
+            <ul class="sub">
+              <li><a href="system_version.html">系统状态</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <input type="checkbox"
+                   style="width: 20px; height: 15px;"
+                   name="helmetcheck"
+                   id="helmet"
+                   onclick="check()"
+                   value=""/>
+            <label style="font-size:20px; vertical-align:middle;"
+                   for="helmet">安全帽检测</label><br>
+            <input type="checkbox"
+                   style="width: 20px; height: 15px; "
+                   name="maskcheck"
+                   id="mask"
+                   onclick="check()"
+                   value=""/>
+            <label style="font-size:20px; vertical-align:middle;"
+                   for="mask">口罩检测</label><br>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+
+
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <br>
+        <table>
+          <td>
+            <div class="camera_sub_video" id="camera_sub_video_osd">
+              <video id="ai_sub_player" width="640" height="360" muted autoplay></video>
+            </div>
+          </td>
+          <td>
+            <table id="smart_page_table" style="border-collapse: separate; border-spacing: 10px 10px;">
+              <tr>
+                <td>
+                <h2>场景设置</h2>
+              </td>
+              </tr>
+              <tr>
+                <td>智能场景: </td>
+                <td><select id="smart_model" class="select" title="请选择">
+                    <option value="1">智慧家庭(model-1)</option>
+                    <option value="2">智慧楼宇(model-2)</option>
+                    <option value="3">智慧社区(model-3)</option>
+                    <option value="4">智能抓拍(model-4)</option>
+                    <option value="5">智慧识别(model-5)</option>
+                    <option value="6">人形+声音(model-6)</option>
+                    <option value="7">人形+区域+移动(model-7)</option>
+                    <option value="8">口罩检测(model-8)</option>
+                    <option value="9">FR家庭成员+VLOG(model-9)</option>
+                    <option value="10">关闭AI</option>
+                  </select></td>
+              </tr>
+
+              <tr>
+                <td>移动侦测: </td>
+                <td><select id="md_enabled" class="select" title="请选择">
+                    <option value="0">关闭</option>
+                    <option value="1">打开</option>
+                  </select></td>
+              </tr>
+
+              <tr>
+                <td>人形侦测: </td>
+                <td><select id="pd_enabled"  class="select" title="请选择">
+                    <option value="0">关闭</option>
+                    <option value="1">打开</option>
+                  </select></td>
+              </tr>
+
+              <tr>
+                <td>区域入侵: </td>
+                <td><select id="pd_intrusion_enabled" class="select" title="请选择">
+                    <option value="0">关闭</option>
+                    <option value="1">打开</option>
+                  </select></td>
+              </tr>
+
+              <tr>
+                 <td>区域坐标1-2: </td>
+                 <td>
+                  &nbsp;&nbsp;
+                  <label for="pd_privacy_x1">x1: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x1" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for="pd_privacy_y1">y1: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y1" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_x2">x2: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x2" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_y2">y2: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y2" size="6">
+                </td>
+              </tr>
+
+              <tr>
+                <td>区域坐标3-4: </td>
+                <td>
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_x3">x3: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x3" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_y3">y3: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y3" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_x4">x4: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x4" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_y4">y4: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y4" size="6">
+                </td>
+              </tr>
+
+              <tr>
+                <td>区域坐标5-6: </td>
+                <td>
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_x5">x5: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x5" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_y5">y5: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y5" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_x6">x6: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_x6" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" pd_privacy_y6">y6: </label>
+                  &nbsp;
+                  <input type="text" id="pd_privacy_y6" size="6">
+                </td>
+              </tr>
+
+              <tr>
+                <td>移动侦测阈值</td>
+                  <td><input id="md_threshold" type="text"> (0-255)</td>
+              </tr>
+             
+              <tr>
+                <td>人形侦测阈值</td>
+                  <td><input id="pd_threshold" type="text"> (0-99)</td>
+              </tr>
+
+              <tr>
+                <td><button type="submit" id="save_ai_cfg" name="save" formmethod="post">保存</button></td>
+                <td><button type="submit" id="reset_ai_cfg" name="reset" formmethod="post">恢复默认</button></td>
+              </tr>
+
+            </table>
+          </td>
+        </table>
+        <hr />
+        <table>
+          <td>
+            <div class="camera_sub_video" id="camera_sub_video_osd">
+              <canvas id="ai_video_overlay" width="640" height="360"></canvas>
+            </div>
+          </td>
+          <td>
+            <table id="smart_page_table" style="border-collapse: separate; border-spacing: 10px 10px;">
+              <tr>
+                <td>
+                <h2>人脸注册</h2>
+              </td>
+              </tr>
+
+              <tr>
+                <td>
+                <label for="ai_name">姓名：</label>
+                <input id="ai_name" type="text" size="30" /></td>
+              </tr>
+              <br />
+              <tr>
+                <td>
+                <label for="ai_sex_select">性别：</label>
+                <select id="ai_sex_select" class="select" title="请选择">
+                  <option value="1">男</option>
+                  <option value="2">女</option>
+                  <option value="3">其他</option>
+                </select>
+              </td>
+              </tr>
+              <br />
+              <tr>
+                <td>
+                <label for="ai_age">年龄：</label>
+                <input id="ai_age" type="text" size="30" /></td>
+              </tr>
+              <br />
+              <tr>
+                <td>
+                <button type="submit" id="ai_delete" name="detele" formmethod="post">删除</button></td>
+              </tr>
+              <tr>
+                <td>
+                <button type="submit" id="ai_register" name="register" formmethod="post">注册</button></td>
+              </tr>
+            </table>
+          </td>
+        </table>
+      </section>
+    </section>
+    <!--main content end-->
+
+
+    <!--footer start-->
+    <footer class="site-footer">
+      <div class="text-center">
+        <p>
+          &copy; Copyright (C) Cvitek Co., Ltd. 2019-2020. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!--footer end-->
+  </section>
+
+  <script src="js/third_party/jmuxer.min.js"></script>
+  <script src="js/setting_smart.js"></script>
+  <script src="js/third_party/bootstrap.min.js"></script>
+  <script class="include" type="text/javascript" src="js/third_party/jquery.dcjqaccordion.2.7.js"></script>
+  <script src="js/third_party/jquery.scrollTo.min.js"></script>
+  <script src="js/third_party/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--common script for all pages-->
+  <script src="js/third_party/common-scripts.js"></script>
+  <!--script for this page-->
+
+</body>
+
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Sam">
+  <meta name="keyword" content="IPC">
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="expires" CONTENT="0">
+  <title>CViTek IP Camera</title>
+  <!-- Favicons -->
+  <link href="src/img/favicon.ico" rel="icon">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!--external css-->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+  <!-- scripts -->
+  <script src="js/third_party/jquery.min.js"></script>
+  <script src="js/third_party/bootstrap-slider.min.js"></script>
+</head>
+
+<body>
+  <section id="container">
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><img src="src/img/logo.png" width="100%" height="100%"></a>
+      <!--logo end-->
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <!-- <li><a class="logout" href="">Logout</a></li> -->
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+
+
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+          <li class="mt">
+            <a href="index.html">
+              <i class="fa fa-dashboard"></i>
+              <span>预览</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a class="active" href="javascript:;">
+              <i class="fa fa-desktop"></i>
+              <span>图像设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="h265_player.html">H265播放器</a></li>
+              <li><a href="setting_image.html">图像</a></li>
+              <li><a href="setting_osd.html">OSD</a></li>
+              <li class="active"><a href="setting_video.html">视频</a></li>
+              <li><a href="setting_audio.html">音频</a></li>
+              <li><a href="setting_smart.html">智能</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-cogs"></i>
+              <span>网络设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="setting_net_basic.html">基本设置</a></li>
+              <li><a href="setting_net_stream.html">流设置</a></li>
+              <li><a href="setting_net_cloud.html">云端设置</a></li>
+              <li><a href="setting_net_check.html">网络检测</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-comments-o"></i>
+              <span>系统信息</span>
+            </a>
+            <ul class="sub">
+              <li><a href="system_version.html">系统状态</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+
+
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <br>
+        <br>
+        <!-- stream setting -->
+        <table>
+          <td>
+            <table id="video_page_table" style="border-collapse: separate; border-spacing: 20px 5px;">
+              <!-- main stream setting -->
+              <td>
+                <tr><label>主码流</label></tr>
+                <tr>
+                  <td>状态</td>
+                  <td><select id="main_stream_enabled" title="请选择">
+                      <option value="0">启用</option>
+                      <option value="1">禁用</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>编码模式</td>
+                  <td><select id="main_stream_codec" title="请选择">
+                      <option value="0">H.264</option>
+                      <option value="1">H.265</option>
+                      <option value="2">MJPEG</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>分辨率</td>
+                  <td><select id="main_stream_resolution" title="请选择">
+                      <option value="0">1440P</option>
+                      <option value="1">1080P</option>
+                      <option value="2">720P</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>帧率</td>
+                  <td><select id="main_stream_fps" title="请选择">
+                      <option value="30">30</option>
+                      <option value="25">25</option>
+                      <option value="20">20</option>
+                      <option value="15">15</option>
+                      <option value="10">10</option>
+                      <option value="5">5</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>画质</td>
+                  <td><select id="main_stream_profile" title="请选择">
+                      <option value="0">Baseline</option>
+                      <option value="1">Extended</option>
+                      <option value="2">Main</option>
+                      <option value="3">High</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>码率控制</td>
+                  <td><select id="main_stream_rc" title="请选择">
+                      <option value="0">CBR</option>
+                      <option value="1">VBR</option>
+                      <option value="2">AVBR</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>比特率</td>
+                  <td><input id="main_stream_bitrate" type="text"> (100-3000)</td>
+                  <!-- <td><label class="text" editable="false"> (100-3000)</label> </td> -->
+                </tr>
+              </td>
+            </table>
+          </td>
+          <td>
+            <table id="video_page_table2"  style="border-collapse: separate; border-spacing: 20px 5px;">
+              <!-- sub stream setting -->
+              <td>
+                <tr><label>子码流</label></tr>
+                <tr>
+                  <td>状态</td>
+                  <td><select id="sub_stream_enabled" title="请选择">
+                      <option value="0">启用</option>
+                      <option value="1">禁用</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>编码模式</td>
+                  <td><select id="sub_stream_codec" title="请选择">
+                      <option value="0">H.264</option>
+                      <option value="1">H.265</option>
+                      <option value="2">MJPEG</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>分辨率</td>
+                  <td><select id="sub_stream_resolution" title="请选择">
+                      <option value="0">576P</option>
+                      <option value="1">360P</option>
+                      <!-- <option value="2">576P</option> -->
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>帧率</td>
+                  <td><select id="sub_stream_fps" title="请选择">
+                      <option value="30">30</option>
+                      <option value="25">25</option>
+                      <option value="20">20</option>
+                      <option value="15">15</option>
+                      <option value="10">10</option>
+                      <option value="5">5</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>画质</td>
+                  <td><select id="sub_stream_profile" title="请选择">
+                      <option value="0">Baseline</option>
+                      <option value="1">Extended</option>
+                      <option value="2">Main</option>
+                      <option value="3">High</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>码率控制</td>
+                  <td><select id="sub_stream_rc" title="请选择">
+                      <option value="0">CBR</option>
+                      <option value="1">VBR</option>
+                      <option value="2">AVBR</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td>比特率</td>
+                  <td><input id="sub_stream_bitrate" type="text"> (100-3000)</td>
+                </tr>
+              </td>
+            </table>
+          </td>
+        </table>
+
+        <br>
+        <br>
+        <!-- operation buttons -->
+        <tr>
+          <td><button id="save_stream_cfg" name="save">保存</button></td>
+          <td><button id="reset_stream_cfg" name="reset">恢复默认</button></td>
+        </tr>
+      </section>
+
+      <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color=#987cb9 SIZE=10>
+        <div style="margin-left: 10px">
+          <label>感兴趣区域ROI</label>
+          <table>
+            <div style="margin-top: 10px">
+              <span>区域0</span>
+              <span>状态</span>
+              <select id="roi_enable0" class="select" title="请选择" style="margin-left: 20px">
+                <option value="0">关闭</option>
+                <option value="1">开启</option>
+              </select>
+			  &nbsp;&nbsp;
+              <label for="roi_venc0">VENC CHN: </label>
+              &nbsp;
+			  <input type="text" id="roi_venc0" size="4">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_abs_qp0">ABS QP: </label>
+              &nbsp;
+              <input type="text" id="roi_abs_qp0" size="6">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_qp0">QP: </label>
+              &nbsp;
+              <input type="text" id="roi_qp0" size="6">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_x0">坐标X: </label>
+              &nbsp;
+              <input type="text" id="roi_x0" size="6">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_y0">坐标Y: </label>
+              &nbsp;
+              <input type="text" id="roi_y0" size="6">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_width0">宽度: </label>
+              &nbsp;
+              <input type="text" id="roi_width0" size="6">
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <label for="roi_hight0">高度: </label>
+              &nbsp;
+              <input type="text" id="roi_hight0" size="6">
+              &nbsp;&nbsp;
+            </div>
+        </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域1</span>
+            <span>状态</span>
+            <select id="roi_enable1" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc1">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc1" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp1">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp1" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp1">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp1" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x1">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x1" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y1">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y1" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width1">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width1" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight1">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight1" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域2</span>
+            <span>状态</span>
+            <select id="roi_enable2" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc2">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc2" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp2">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp2" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp2">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp2" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x2">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x2" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y2">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y2" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width2">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width2" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight2">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight2" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域3</span>
+            <span>状态</span>
+            <select id="roi_enable3" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc3">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc3" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp3">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp3" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp3">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp3" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x3">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x3" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y3">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y3" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width3">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width3" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight3">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight3" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域4</span>
+            <span>状态</span>
+            <select id="roi_enable4" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc4">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc4" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_q4p">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp4" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp4">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp4" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x4">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x4" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y4">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y4" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width4">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width4" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight4" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域5</span>
+            <span>状态</span>
+            <select id="roi_enable5" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc5">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc5" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp5">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp5" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp5">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp5" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x5">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x5" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y5">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y5" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width5">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width5" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight5" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域6</span>
+            <span>状态</span>
+            <select id="roi_enable6" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc6">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc6" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp6">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp6" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp6">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp6" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x6">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x6" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y6">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y6" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width6">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width6" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight6">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight6" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <table>
+          <div style="margin-top: 10px">
+            <span>区域7</span>
+            <span>状态</span>
+            <select id="roi_enable7" class="select" title="请选择" style="margin-left: 20px">
+              <option value="0">关闭</option>
+              <option value="1">开启</option>
+            </select>
+			&nbsp;&nbsp;
+            <label for="roi_venc7">VENC CHN: </label>
+            &nbsp;
+			<input type="text" id="roi_venc7" size="4">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_abs_qp7">ABS QP: </label>
+            &nbsp;
+            <input type="text" id="roi_abs_qp7" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_qp7">QP: </label>
+            &nbsp;
+            <input type="text" id="roi_qp7" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_x7">坐标X: </label>
+            &nbsp;
+            <input type="text" id="roi_x7" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_y7">坐标Y: </label>
+            &nbsp;
+            <input type="text" id="roi_y7" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_width7">宽度: </label>
+            &nbsp;
+            <input type="text" id="roi_width7" size="6">
+            &nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <label for="roi_hight7">高度: </label>
+            &nbsp;
+            <input type="text" id="roi_hight7" size="6">
+            &nbsp;&nbsp;
+          </div>
+      </table>
+      <tr>
+        <div style="margin-left: 10px"></div>
+        <br>
+        <td><button id="save_roi_cfg" name="save">保存</button></td>
+<!--    <td><button id="reset_roi_cfg" name="reset">恢复默认</button></td>-->
+      </div>
+      </tr>
+    </div>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color=#987cb9 SIZE=10>
+    <div style="margin-left: 10px">
+      <label>视频录制</label>
+      <div style="margin-top: 20px">
+        <span>状态</span>
+          <select id="record_status" title="请选择" style="margin-left: 20px">
+            <option value="0">停止</option>
+            <option value="1">开启</option>
+          </select>
+		<table>
+	      <tr>
+		    <td>查询日期: </td>
+		    <td><input id="record_date" type="text" size="30" /></td>
+			<td><button id="record_check" name="check">查询</button></td>
+			<td>回放日期: </td>
+		    <td><input id="replay_date" type="text" size="30" /></td>
+			<td><button id="replay_start" name="start">回放</button></td>
+			<td><button id="replay_stop" name="stop">停止</button></td>
+	      </tr>
+		  <tr>
+			<td>录像片段: </td>
+		    <td><textarea id="record_segment" style="width: 400px; height: 50px"></textarea></td>
+		  </tr>
+		</table>
+      </div>
+    </section>
+    <!--main content end-->
+
+
+    <!--footer start-->
+    <footer class="site-footer">
+      <div class="text-center">
+        <p>
+          &copy; Copyright (C) Cvitek Co., Ltd. 2019-2020. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!--footer end-->
+  </section>
+
+
+  <!-- js placed at the end of the document so the pages load faster -->
+  <script src="js/setting_video.js"></script>
+  <script src="js/third_party/bootstrap.min.js"></script>
+  <script src="js/third_party/jquery.dcjqaccordion.2.7.js"></script>
+  <script src="js/third_party/jquery.scrollTo.min.js"></script>
+  <script src="js/third_party/jquery.nicescroll.js"></script>
+  <!--common script for all pages-->
+  <script src="js/third_party/common-scripts.js"></script>
+  <!--script for this page-->
+
+</body>
+
+</html>

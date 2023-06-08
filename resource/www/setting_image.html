@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Sam">
+  <meta name="keyword" content="IPC">
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="expires" CONTENT="0">
+  <!-- <meta http-equiv="refresh" content="60"> -->
+  <title>CViTek IP Camera</title>
+  <!-- Favicons -->
+  <link href="../src/img/favicon.ico" rel="icon">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!--external css-->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/bootstrap-slider.min.css" rel="stylesheet">
+  <!-- scripts -->
+  <script src="js/third_party/jquery.min.js"></script>
+  <script src="js/third_party/bootstrap-slider.min.js"></script>
+</head>
+
+<body>
+
+  <style>
+    canvas {
+      border: 1px solid rgb(51, 51, 51);
+      display: block;
+    }
+
+    /* input {
+        width: 100px;
+        margin-left: 200px;
+        margin-top: 650px;
+    } */
+
+    #canvas {
+      position: absolute;
+      /* margin-left: -640px; */
+      margin-top: -365px;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    #canvasSave {
+      position: absolute;
+      /* margin-left: -640px; */
+      margin-top: -365px;
+    }
+  </style>
+  <section id="container">
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><img src="src/img/logo.png" width="100%" height="100%"></a>
+      <!--logo end-->
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <!-- <li><a class="logout" href="">Logout</a></li> -->
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+          <li class="mt">
+            <a href="index.html">
+              <i class="fa fa-dashboard"></i>
+              <span>预览</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a class="active" href="javascript:;">
+              <i class="fa fa-desktop"></i>
+              <span>图像设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="h265_player.html">H265播放器</a></li>
+              <li class="active"><a href="setting_image.html">图像</a></li>
+              <li><a href="setting_osd.html">OSD</a></li>
+              <li><a href="setting_video.html">视频</a></li>
+              <li><a href="setting_audio.html">音频</a></li>
+              <li><a href="setting_smart.html">智能</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-cogs"></i>
+              <span>网络设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="setting_net_basic.html">基本设置</a></li>
+              <li><a href="setting_net_stream.html">流设置</a></li>
+              <li><a href="setting_net_cloud.html">云端设置</a></li>
+              <li><a href="setting_net_check.html">网络检测</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-comments-o"></i>
+              <span>系统信息</span>
+            </a>
+            <ul class="sub">
+              <li><a href="system_version.html">系统状态</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <table id="img_page_table">
+          <!-- td_camera_sub_video start -->
+          <td id="td_camera_sub_video">
+            <div class="camera_sub_video" id="camera_sub_video_image">
+              <video id="img_sub_player" width="640" height="360" muted autoplay></video>
+              <canvas id="canvas" width="640px" height="360px"></canvas>
+              <canvas id="canvasSave" width="640px" height="360px"></canvas>
+            </div>
+          </td> <!-- end of td_camera_sub_video -->
+
+          <!-- td_camera_img_slider start -->
+          <td id="td_camera_img_slider">
+            <table id="camera_img_settings" style="border-collapse: separate; border-spacing: 20px 5px;">
+              <tr class="camera_img_slider">
+                <!-- brightness_slider -->
+                <td> <span class="camera_img_label">亮度: </span> </td>
+                <td> <input id="brightness_slider" type="text" data-slider-min="0" data-slider-max="100"
+                    data-slider-step="1" data-slider-value="50" /></td>
+                <td> <span id="brightness_slider_label">50</span> </td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td> <span class="camera_img_label">锐度: </span></td>
+                <td><input id="sharpness_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="sharpness_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td> <span class="camera_img_label">色度: </span></td>
+                <td><input id="chroma_slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1"
+                    data-slider-value="50" /></td>
+                <td><span id="chroma_slider_label">50</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">对比度: </span></td>
+                <td><input id="contrast_slider" type="text" data-slider-min="0" data-slider-max="100"
+                    data-slider-step="1" data-slider-value="50" /></td>
+                <td><span id="contrast_slider_label">50</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td> <span class="camera_img_label">饱和度: </span></td>
+                <td><input id="saturation_slider" type="text" data-slider-min="0" data-slider-max="100"
+                    data-slider-step="1" data-slider-value="50" /></td>
+                <td><span id="saturation_slider_label">50</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td> <span class="camera_img_label">2D降噪: </span></td>
+                <td><input id="noise2d_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="noise2d_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">3D降噪: </span></td>
+                <td><input id="noise3d_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="noise3d_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">背光补偿: </span></td>
+                <td><input id="switch_compensation" type="checkbox"> 打开</td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">背光补偿等级: </span></td>
+                <td><input id="compensation_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="compensation_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">强光抑制: </span></td>
+                <td><input id="switch_suppression" type="checkbox"> 打开</td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">强光抑制等级: </span></td>
+                <td><input id="suppression_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="suppression_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">白平衡模式: </span></td>
+                <td><select id="switch_whiteBalance" class="select" title="请选择"
+                    onchange="func_switch_whiteBalance(this.value)">
+                    <option value="0">自动</option>
+                    <option value="1">手动</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">红色增益: </span></td>
+                <td><input id="red_gain_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="red_gain_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">蓝色增益: </span></td>
+                <td><input id="blue_gain_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="blue_gain_slider_label">100</span></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">透雾开关: </span></td>
+                <td><input id="switch_defog" type="checkbox"> 打开</td>
+              </tr>
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">透雾等级: </span></td>
+                <td><input id="defog_slider" type="text" data-slider-min="0" data-slider-max="255" data-slider-step="1"
+                    data-slider-value="100" /></td>
+                <td><span id="defog_slider_label">100</span></td>
+              </tr>
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">电子快门: </span></td>
+                <td><input id="switch_shutter" type="checkbox"> 打开</td>
+              </tr>
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">快门速度: </span></td>
+                <td><input id="shutter_slider" type="text" data-slider-min="1" data-slider-max="32000" data-slider-step="1"
+                    data-slider-value="100" /></td>
+                <td><span id="shutter_slider_label">100</span></td>
+              </tr>
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">LDC畸变校正: </span></td>
+                <td><input id="switch_distortion" type="checkbox"> 打开</td>
+              </tr>
+              <tr class="camera_img_slider">
+                <td><span class="camera_img_label">校正等级: </span></td>
+                <td><input id="distortion_slider" type="text" data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                    data-slider-value="1" /></td>
+                <td><span id="distortion_slider_label">1</span></td>
+              </tr>
+
+              <!-- <tr class="camera_img_switch">
+                <td> <span class="camera_img_label">补光亮度: </span></td>
+                <td><input id="fillBrightness_slider" type="text" data-slider-min="0" data-slider-max="255"
+                    data-slider-step="1" data-slider-value="100" /></td>
+                <td><span id="fillBrightness_slider_label">100</span></td>
+              </tr> -->
+            </table>
+          </td> <!-- end of td_camera_img_slider -->
+
+          <!-- td_camera_img_switch start -->
+          <td id="td_camera_img_switch">
+            <table class="camera_img_settings" style="border-collapse: separate; border-spacing: 20px 5px;">
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">防闪频率: </span></td>
+                <td><select id="switch_videoFormat" class="select" title="请选择">
+                    <option value="0">50Hz</option>
+                    <option value="1">60Hz</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">强制抗闪: </span></td>
+                <td><select id="switch_antiFlash" class="select" title="请选择"
+                    onchange="func_switch_antiflash(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">水平翻转: </span></td>
+                <td><select id="switch_horizontalFlip" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">垂直翻转: </span></td>
+                <td><select id="switch_verticallyFlip" class="select" title="请选择"
+                    onchange="func_switch_vflip(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">宽动态模式: </span></td>
+                <td><select id="switch_WDR" class="select" title="请选择" onchange="func_switch_wdr(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">IRCut自动模式: </span></td>
+                <td><select id="switch_IRcut" class="select" title="请选择" onchange="func_switch_ircut(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">IRCut手动模式: </span></td>
+                <td><select id="switch_IRcutManual" class="select" title="请选择" onchange="func_switch_ircutManual(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">IRCut手动模式控制: </span></td>
+                <td>
+                  <button type="button" name="day" value="0" onClick="func_switch_ircutManualStatus(value)">白天</button>
+                  <button type="button" name="night" value="1" onClick="func_switch_ircutManualStatus(value)">夜晚</button>
+                </td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td><span class="camera_img_label">保持彩色: </span></td>
+                <td><select id="switch_keepColor" class="select" title="请选择"
+                    onchange="func_switch_keepcolor(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td> <span class="camera_img_label">数字防抖: </span></td>
+                <td><select id="switch_dis" class="select" title="请选择" onchange="func_switch_dis(this.value)">
+                    <option value="0">关闭</option>
+                    <option value="1">开启</option>
+                  </select></td>
+              </tr>
+
+              <tr class="camera_img_switch">
+                <td> <span class="camera_img_label">数字签名: </span></td>
+                <td><select id="switch_ds" class="select" title="请选择" onchange="func_switch_ds(this.value)">
+                    <option value="0">关闭</option>
+                    <option value="1">开启</option>
+                  </select></td>
+              </tr>
+            </table>
+          </td> <!-- end of td_camera_img_switch -->
+        </table>
+
+        <button type="button" id="smart_btn_save" name="save" onClick="smart_range_save()">保存区域</button>
+        <button type="button" id="smart_btn_empty" name="empty" onClick="smart_range_empty()">清空画布</button>
+        <button type="button" id="smart_btn_delete" name="delete">清除区域</button>
+        <button type="button" id="smart_btn_save_all" name="save_all">保存</button>
+      </section> <!-- end of wrapper -->
+
+    </section>
+    <!--main content end-->
+
+
+    <!--footer start-->
+    <footer class="site-footer">
+      <div class="text-center">
+        <p>
+          &copy; Copyright (C) Cvitek Co., Ltd. 2019-2020. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!--footer end-->
+  </section>
+
+  <!-- js placed at the end of the document so the pages load faster -->
+  <script src="js/setting_image.js"></script>
+  <script src="js/third_party/jmuxer.min.js"></script>
+  <script src="js/third_party/bootstrap.min.js"></script>
+  <script src="js/third_party/jquery.dcjqaccordion.2.7.js"></script>
+  <script src="js/third_party/jquery.scrollTo.min.js"></script>
+  <script src="js/third_party/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--common script for all pages-->
+  <script src="js/third_party/common-scripts.js"></script>
+</body>
+
+</html>

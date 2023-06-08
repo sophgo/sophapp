@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Sam">
+  <meta name="keyword" content="IPC">
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="expires" CONTENT="0">
+  <meta http-equiv="refresh" content="60">
+  <title>CViTek IP Camera</title>
+  <!-- Favicons -->
+  <link href="src/img/favicon.ico" rel="icon">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!--external css-->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/bootstrap-slider.min.css" rel="stylesheet">
+  <!-- scripts -->
+  <script src="js/third_party/jquery.min.js"></script>
+  <script src="js/third_party/bootstrap-slider.min.js"></script>
+</head>
+
+<body>
+  <section id="container">
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><img src="src/img/logo.png" width="100%" height="100%"></a>
+      <!--logo end-->
+      <div class="nav notify-row" id="top_menu">
+      </div>
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <!-- <li><a class="logout" href="">Logout</a></li> -->
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+
+
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+          <li class="mt">
+            <a href="index.html">
+              <i class="fa fa-dashboard"></i>
+              <span>预览</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a class="active" href="javascript:;">
+              <i class="fa fa-desktop"></i>
+              <span>图像设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="h265_player.html">H265播放器</a></li>
+              <li><a href="setting_image.html">图像</a></li>
+              <li class="active"><a href="setting_osd.html">OSD</a></li>
+              <li><a href="setting_video.html">视频</a></li>
+              <li><a href="setting_audio.html">音频</a></li>
+              <li><a href="setting_smart.html">智能</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-cogs"></i>
+              <span>网络设置</span>
+            </a>
+            <ul class="sub">
+              <li><a href="setting_net_basic.html">基本设置</a></li>
+              <li><a href="setting_net_stream.html">流设置</a></li>
+              <li><a href="setting_net_cloud.html">云端设置</a></li>
+              <li><a href="setting_net_check.html">网络检测</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fa fa-comments-o"></i>
+              <span>系统信息</span>
+            </a>
+            <ul class="sub">
+              <li><a href="system_version.html">系统状态</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+
+
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <!-- osd_page_table start -->
+        <table id="osd_page_table">
+
+          <!-- td_camera_sub_video start -->
+          <td id="td_camera_sub_video">
+            <div class="camera_sub_video" id="camera_sub_video_osd">
+              <video id="sub_player" width="640" height="360" muted autoplay></video>
+              <canvas id="video_overlay" class="video_overlay" width="640" height="360"></canvas>
+            </div>
+          </td> <!-- end of td_camera_sub_video -->
+
+          <!-- td_camera_osd_switch start -->
+          <td id="td_camera_osd_switch">
+            <table class="camera_osd_setting" style="border-collapse: separate; border-spacing: 20px 5px;">
+              <tr>
+                <div id="osd_div_global" class="div_group">
+                  <!-- global switch -->
+                  <h4>全局设置: </h4>
+                  <label for="switch_osd_global">OSD显示: </label>
+                  <select id="switch_osd_global" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+                </div>
+              </tr>
+
+              <!-- about timestamp setting -->
+              <tr>
+                <div id="osd_div_timestamp" class="div_group">
+                  <h4>时间戳</h4>
+
+                  <label for="switch_osd_time">时间显示: </label>
+                  <select id="switch_osd_time" class="select" title="请选择" onchange="func_switch_vflip(this.value)">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+
+                  &nbsp;&nbsp;
+                  <label for="osd_ts_x">x: </label>
+                  &nbsp;
+                  <input type="text" id="osd_ts_x" size="6">
+                  &nbsp;&nbsp;
+                  <label for=" osd_ts_y">y: </label>
+                  &nbsp;
+                  <input type="test" id="osd_ts_y" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" osd_ts_type">时间格式: </label>
+                  <select id="osd_ts_type" class="select" title="请选择">
+                    <option value="0">yyyy-mm-dd hh:mm:ss</option>
+                    <option value="1">yyyy/mm/dd hh:mm:ss</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_ts_font_size">字号: </label>
+                  <select id="osd_ts_font_size" class="select" title="请选择">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+              </tr>
+
+              <!-- about text1 setting -->
+              <!-- 文本1 -->
+              <tr>
+                <div id="osd_div_text1" class="div_group">
+                  <h4>文本1</h4>
+
+                  <label for="switch_osd_text1">文本1显示: </label>
+                  <select id="switch_osd_text1" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_text1_x">x: </label>
+                  &nbsp;
+                  <input type="text" id="osd_text1_x" size="6">
+                  &nbsp;&nbsp;
+                  <label for=" osd_text1_y">y: </label>
+                  &nbsp;
+                  <input type="test" id="osd_text1_y" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" osd_text1_font_size">字号: </label>
+                  <select id="osd_text1_font_size" class="select" title="请选择">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_text1_color">字体颜色：</label>
+                  <!-- <object id="osd_text1_color" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px"
+                    height="0px"></object> -->
+                  <input id="osd_text1_color" type="text" value="" size="12" readonly="readonly" />
+                  <br />
+                  <label for="osd_text1_content">文本内容：</label>
+                  <input id="osd_text1_content" type="text" size="50" />
+                </div>
+              </tr>
+
+              <!-- 文本2 -->
+              <tr>
+                <div id="osd_div_text2" class="div_group">
+                  <h4>文本2</h4>
+
+                  <label for="switch_osd_text2">文本2显示: </label>
+                  <select id="switch_osd_text2" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_text2_x">x: </label>
+                  &nbsp;
+                  <input type="text" id="osd_text2_x" size="6">
+                  &nbsp;&nbsp;
+                  <label for=" osd_text2_y">y: </label>
+                  &nbsp;
+                  <input type="test" id="osd_text2_y" size="6">
+
+                  &nbsp;&nbsp;
+                  <label for=" osd_text2_font_size">字号: </label>
+                  <select id="osd_text2_font_size" class="select" title="请选择">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_text2_color">字体颜色：</label>
+                  <!-- <object id="osd_text2_color" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px"
+                    height="0px"></object> -->
+                  <input id="osd_text2_color" type="text" value="" size="12" readonly="readonly" />
+                  <br />
+                  <label for="osd_text2_content">文本内容：</label>
+                  <input id="osd_text2_content" type="text" size="50" />
+                </div>
+              </tr>
+
+              <!-- 文本3 -->
+              <tr>
+                <div id="osd_div_text3" class="div_group">
+                  <h4>文本3</h4>
+
+                  <label for="switch_osd_text3">文本3显示: </label>
+                  <select id="switch_osd_text3" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for="osd_text3_x">x: </label>
+                  &nbsp;
+                  <input type="text" id="osd_text3_x" size="6">
+                  &nbsp;
+                  <label for=" osd_text3_y">y: </label>
+                  &nbsp;
+                  <input type="text" id="osd_text3_y" size="6">
+
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for=" osd_text3_font_size">字号: </label>
+                  <select id="osd_text3_font_size" class="select" title="请选择">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                  </select>
+
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for="osd_text3_color">字体颜色：</label>
+                  <!-- <object id="osd_text3_color" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px"
+                    height="0px"></object> -->
+                  <input id="osd_text3_color" type="text" value="" size="12" readonly="readonly" />
+                  <br />
+                  <label for="osd_text3_content1">第一行：</label>
+                  <input id="osd_text3_content1" type="text" size="50" />
+                  <!-- <br />
+                  <label for="osd_text3_content2">第二行：</label>
+                  <input id="osd_text3_content2" type="text" size="50" />
+                  <br />
+                  <label for="osd_text3_content3">第三行：</label>
+                  <input id="osd_text3_content3" type="text" size="50" />
+                  <br />
+                  <label for="osd_text3_content4">第四行：</label>
+                  <input id="osd_text3_content4" type="text" size="50" />
+                  <br />
+                  <label for="osd_text3_content5">第五行：</label>
+                  <input id="osd_text3_content5" type="text" size="50" /> -->
+                </div>
+              </tr>
+
+              <!-- 隐私区域 -->
+              <tr>
+                <div id="osd_privacy_area" class="div_group">
+                  <h4>隐私区域 个数:
+                    <span id="osd_privacy_num"></span>
+                  </h4>
+                  <label for="switch_osd_privacy">隐私区域: </label>
+                  <select id="switch_osd_privacy" class="select" title="请选择">
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                  </select>
+                  &nbsp;&nbsp;
+                  <label for="osd_privacy_x">x: </label>
+                  &nbsp;
+                  <input type="text" id="osd_privacy_x" size="6">
+                  &nbsp;&nbsp;
+                  <label for="osd_privacy_y">y: </label>
+                  &nbsp;
+                  <input type="text" id="osd_privacy_y" size="6">
+                  &nbsp;&nbsp;
+                  <label for=" osd_privacy_width">宽度: </label>
+                  &nbsp;
+                  <input type="text" id="osd_privacy_width" size="6">
+                  <label for=" osd_privacy_hight">高度: </label>
+                  &nbsp;
+                  <input type="text" id="osd_privacy_hight" size="6">
+                  <label for=" osd_privacy_color">颜色: </label>
+                  <select id="osd_privacy_color" class="select" title="请选择">
+                    <option value="0"style="background:#00FFFF">默认</option>
+                    <option value="1"style="background:#FFFFFF">白色</option>
+                    <option value="2"style="background:#000000">黑色</option>
+                    <option value="3"style="background:#0000FF">蓝色</option>
+                    <option value="4"style="background:#00FF00">绿色</option>
+                    <option value="5"style="background:#FF0000">红色</option>
+                    <option value="6"style="background:#00FFFF">青色</option>
+                    <option value="7"style="background:#FFFF00">黄色</option>
+                    <option value="8"style="background:#FF00FF">洋红</option>
+                  </select>
+                </div>
+              </tr>
+            </table>
+          </td> <!-- end of td_camera_osd_switch -->
+        </table> <!-- end of osd_page_table -->
+      </section>
+
+      <br>
+      <div id="osd_button">
+        <input id="osd_preview" name="checkbox" type="checkbox" value="checkbox"> 预览
+        &nbsp;
+        &nbsp;
+        <button type="button" id="osd_btn_save" name="save">保存</button>
+      </div>
+
+    </section>
+    <!--main content end-->
+
+
+    <!--footer start-->
+    <footer class="site-footer">
+      <div class="text-center">
+        <p>
+          &copy; Copyright (C) Cvitek Co., Ltd. 2019-2020. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!--footer end-->
+  </section>
+
+  <script>
+    // var canvas = document.getElementById("video_overlay");
+    // var context = canvas.getContext('2d');
+    // context.fillStyle = 'green';
+    // context.strokeStyle = '#fff';
+    // context.font = 'bold 40px "微软雅黑"'
+    // context.textBaseline = 'middle';
+    // context.fillText('osd test', 10, 40);
+    // context.fillText('osd2222222', 10, 90);
+
+    // function osd_preview_check(obj) {
+    //   console.log("enter checked");
+    //   console.log(obj.checked);
+    // }
+
+    // $("#osd_preview").change(function () {
+    //   console.log("checked 321");
+    //   if (this.checked == true) {
+    //     document.getElementById("video_overlay").style.display = "";
+    //   } else {
+    //     document.getElementById("video_overlay").style.display = "none";
+    //   }
+    // });
+  </script>
+
+  <script type="text/javascript">
+    function returnColor(va) {
+      var tempColor = va;
+      var Hcolor = dlgHelper.ChooseColorDlg(tempColor).toString(16);
+      with (event.srcElement) {
+        value = ((Hcolor.length < 6) ? "000000".substring(0, 6 - Hcolor.length) : "") + Hcolor;
+      }
+    }
+  </script>
+
+  <!-- js placed at the end of the document so the pages load faster -->
+  <script src="js/setting_video.js"></script>
+  <script src="js/setting_osd.js"></script>
+  <script src="js/third_party/jmuxer.min.js"></script>
+  <script src="js/third_party/bootstrap.min.js"></script>
+  <script src="js/third_party/jquery.dcjqaccordion.2.7.js"></script>
+  <script src="js/third_party/jquery.scrollTo.min.js"></script>
+  <script src="js/third_party/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--common script for all pages-->
+  <script src="js/third_party/common-scripts.js"></script>
+</body>
+
+</html>
